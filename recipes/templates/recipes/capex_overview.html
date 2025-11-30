@@ -1,0 +1,76 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>CAPEX — Visão</title>
+  <style>
+    :root{ --neo-green:#7AC143; --neo-lime:#B5D334; --neo-deep:#0F3A1F; --bg:#F4FBF2; --surface:#fff; --muted:#5E6E62; --r:12px; }
+    body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(#F7FBF5,var(--bg));color:#10301C}
+    .topbar{position:sticky;top:0;background:linear-gradient(90deg,var(--neo-deep),#0B2F19 70%);color:#EFFFF0;padding:14px 20px}
+    .wrap{max-width:1220px;margin:20px auto;padding:0 20px}
+    .board{background:var(--surface);border:1px solid #e6efe6;border-radius:14px;box-shadow:0 12px 28px rgba(15,58,31,.12);padding:18px}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    thead th{position:sticky;top:0;background:#f7fbf7}
+    th,td{padding:10px 12px;border-bottom:1px solid #e7eee7;font-size:13px;text-align:right}
+    th:first-child,td:first-child{text-align:left}
+    tr:hover{background:#f8fcf6}
+    .badge{font-size:11px;padding:2px 8px;border-radius:999px;background:#DFF4D8;border:1px solid #C7E7C0;color:#0B3D22}
+    .cta{display:inline-block;padding:6px 10px;border-radius:999px;background:#E8F6E2;border:1px solid #CBE9C2;color:#0B3D22;text-decoration:none;font-weight:700}
+    tfoot td{font-weight:800;background:#f4faf0}
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <strong>CAPEX — Melhor Visão {{ year }}</strong>
+</header>
+<main class="wrap">
+  <section class="board">
+    <table>
+      <thead>
+        <tr>
+          <th>Plano/Subplano</th>
+          <th>Categoria</th>
+          <th>Realizado (R$ mil)</th>
+          <th>Previsto (R$ mil)</th>
+          <th>MELHOR VISÃO</th>
+          <th>REV3</th>
+          <th>Transferências R$</th>
+          <th>Saldo a Distribuir</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in linhas %}
+        <tr>
+          <td>{{ l.plan.code }} — {{ l.plan.name }}</td>
+          <td><span class="badge">{{ l.plan.get_categoria_display }}</span></td>
+          <td>{{ l.realizado|floatformat:3 }}</td>
+          <td>{{ l.previsto|floatformat:3 }}</td>
+          <td>{{ l.melhor_visao|floatformat:3 }}</td>
+          <td>{{ l.rev3|floatformat:3 }}</td>
+          <td>{{ l.transferencia|floatformat:3 }}</td>
+          <td>{{ l.saldo|floatformat:3 }}</td>
+          <td><a class="cta" href="{% url 'capex_editar' l.plan.id %}">Editar</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9">Sem planos cadastrados.</td></tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Total</td>
+          <td>{{ total.realizado|floatformat:3 }}</td>
+          <td>{{ total.previsto|floatformat:3 }}</td>
+          <td>{{ total.melhor_visao|floatformat:3 }}</td>
+          <td>{{ total.rev3|floatformat:3 }}</td>
+          <td>{{ total.transferencia|floatformat:3 }}</td>
+          <td>{{ total.saldo|floatformat:3 }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+</main>
+</body>
+</html>
