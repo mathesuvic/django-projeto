@@ -1,11 +1,18 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-# Create your views here.
+from .services.planejamento_mt_correntes import excel_para_html
+
 def home(request):
-    return render(request,'recipes/home.html')
+    return render(request, "recipes/home.html")
 
-def contato(request):
-    return render(request,'recipes/contato.html')
+def planejamentomt(request):
+    return render(request, "recipes/planejamentomt.html")
 
-def sobre(request):
-    return HttpResponse('sobre')
+def correcao_correntes(request):
+    contexto = {}
+    if request.method == "POST" and request.FILES.get("arquivo"):
+        try:
+            ctx = excel_para_html(request.FILES["arquivo"])
+            contexto.update(ctx)
+        except Exception as e:
+            contexto["erro"] = f"Não foi possível ler o Excel: {e}"
+    return render(request, "recipes/correcao_correntes.html", contexto)

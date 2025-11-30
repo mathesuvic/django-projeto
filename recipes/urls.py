@@ -1,10 +1,10 @@
+# recipes/urls.py
 from django.urls import path
-#from django.contrib import admin
-from recipes.views import home, contato, sobre
-
+from . import views
 
 urlpatterns = [
-    path('',home),
-    path('sobre/',sobre),
-    path('contato/',contato),
+    path("", views.home, name="home"),
+    path("planejamentomt/", views.planejamentomt, name="planejamentomt"),
+    path("planejamentomt/correcao-correntes/", views.correcao_correntes, name="correcao_correntes"),
 ]
+

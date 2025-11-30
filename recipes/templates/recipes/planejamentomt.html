@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planejamento MT — Neoenergia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --neo-green: #7AC143;
+      --neo-lime:  #B5D334;
+      --neo-deep:  #0F3A1F;
+      --neo-sky:   #2CA7E0;
+      --bg:        #F4FBF2;
+      --surface:   #FFFFFF;
+      --text:      #10301C;
+      --muted:     #5E6E62;
+      --ok:        #1F8A34;
+      --shadow:    0 12px 28px rgba(15,58,31,.12);
+      --r: 14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 480px at 10% -10%, #EAF6E5 0 60%, transparent 60%),
+        linear-gradient(#F7FBF5, var(--bg));
+    }
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      display:flex; align-items:center; gap:12px;
+      padding:14px 20px; color:#EFFFF0;
+      background: linear-gradient(90deg, var(--neo-deep), #0B2F19 70%);
+      box-shadow:0 8px 20px rgba(0,0,0,.08);
+    }
+    .dot{width:14px;height:14px;border-radius:50%;
+      background:linear-gradient(180deg,var(--neo-lime),var(--neo-green));
+      box-shadow:0 0 0 3px #ffffff1a, inset 0 6px 10px #00000022;
+    }
+    .title{font-weight:800; letter-spacing:.2px}
+    .title small{font-weight:600; opacity:.85; background:#ffffff1a; padding:4px 8px; border-radius:999px; margin-left:8px}
+
+    .wrap{max-width:1180px; margin:24px auto 56px; padding:0 20px}
+    .board{
+      background:linear-gradient(180deg,#fff,#fffefc);
+      border:1px solid #e5efe3; border-radius:var(--r); padding:24px;
+      box-shadow:var(--shadow);
+    }
+    .board h1{margin:0 0 6px; color:var(--neo-deep); font-size:22px}
+    .subtitle{margin:0 0 18px; color:var(--muted); font-size:14px}
+    .back{
+      display:inline-flex; gap:8px; align-items:center; font-weight:700;
+      color:#0E3A22; text-decoration:none; padding:8px 10px; border-radius:10px; border:1px solid #CBE6C6;
+      background:#fff; box-shadow:0 2px 0 #ffffff inset, 0 8px 16px rgba(15,58,31,.08);
+    }
+    .back:hover{transform:translateY(-1px); box-shadow:0 12px 22px rgba(15,58,31,.12)}
+    /* Grid de caixas de ação */
+    .cards{
+      display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:20px; margin-top:18px;
+    }
+    .card{
+      position:relative; display:flex; flex-direction:column; gap:10px;
+      padding:18px 18px 16px;
+      background:linear-gradient(135deg,#ffffff,#F4FAF0 50%, #E9F6E6 100%);
+      border:1px solid #DDEBDD; border-radius:12px;
+      color:inherit; text-decoration:none;
+      box-shadow:0 6px 16px rgba(15,58,31,.08);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .card:hover{transform:translateY(-2px); box-shadow:0 14px 26px rgba(15,58,31,.14); border-color:#CDE4CB}
+    .card:focus-visible{outline:3px solid var(--neo-sky); outline-offset:3px}
+    .accent{
+      position:absolute; inset:0 auto 0 0; width:6px; border-radius:12px 0 0 12px;
+      background:linear-gradient(180deg,var(--neo-lime),var(--neo-green));
+    }
+    .icon{
+      width:42px; height:42px; border-radius:12px; display:grid; place-content:center;
+      background:linear-gradient(180deg,#E4F2DC,#D2E8CC);
+      border:1px solid #C3DFC1; color:#0F2B18;
+      box-shadow:0 1px 0 #fff;
+    }
+    .name{font-weight:800; color:var(--neo-deep); font-size:18px}
+    .desc{color:var(--muted); font-size:13px; line-height:1.4}
+    .cta{
+      margin-top:auto; align-self:flex-start;
+      font-size:12px; font-weight:800; padding:6px 10px; border-radius:999px;
+      color:#0B3D22; background:#DFF4D8; border:1px solid #C7E7C0;
+    }
+    .note{margin-top:12px; color:var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="dot" aria-hidden="true"></span>
+    <div class="title">Planejamento MT <small>Neoenergia — demo</small></div>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="/"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Voltar</a>
+
+    <section class="board" aria-labelledby="titulo">
+      <h1 id="titulo">Ações — Planejamento MT</h1>
+      <p class="subtitle">Clique em uma caixa para executar a ação ou abrir a página correspondente.</p>
+
+      <div class="cards">
+        <!-- 1: Cadastrar estudo para AT -->
+        <a class="card" href="/planejamentomt/cadastrar-estudo-at/" data-action="cadastrar_estudo_at">
+          <span class="accent" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="name">Cadastrar estudo para AT</span>
+          <span class="desc">Abrir formulário para novo estudo (Alta Tensão).</span>
+          <span class="cta">Abrir</span>
+        </a>
+
+        <!-- 2: Correção de correntes -->
+        <a class="card" href="{% url 'correcao_correntes' %}">
+          <span class="accent" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 12h6l2-3 2 6 2-3h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="name">Correção de correntes</span>
+          <span class="desc">Executar rotina de ajuste/validação de correntes.</span>
+          <span class="cta">Executar</span>
+        </a>
+
+        <!-- 3: Correção de Tensão -->
+        <a class="card" href="/planejamentomt/correcao-tensao/" data-action="correcao_tensao">
+          <span class="accent" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M13 3l-9 9h6l-1 9 9-9h-6l1-9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="name">Correção de Tensão</span>
+          <span class="desc">Aplicar parâmetros e recalcular tensões.</span>
+          <span class="cta">Executar</span>
+        </a>
+
+        <!-- 4: Estudos válidos -->
+        <a class="card" href="/planejamentomt/estudos-validos/" data-action="estudos_validos">
+          <span class="accent" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="name">Estudos válidos</span>
+          <span class="desc">Listagem e status dos estudos aprovados.</span>
+          <span class="cta">Ver lista</span>
+        </a>
+
+        <!-- 5: Esteira de Notas -->
+        <a class="card" href="/planejamentomt/esteira-de-notas/" data-action="esteira_de_notas">
+          <span class="accent" aria-hidden="true"></span>
+          <span class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M4 12h12M4 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="name">Esteira de Notas</span>
+          <span class="desc">Acompanhar notas e pendências relacionadas.</span>
+          <span class="cta">Abrir</span>
+        </a>
+      </div>
+
+      <p class="note">
+        Dica: mapeie essas rotas no Django (ex.: /planejamentomt/estudos-validos/). Se quiser executar uma função
+        via JavaScript em vez de navegar, use os data-action abaixo.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // Opcional: intercepte cliques para executar funções locais em vez de navegar.
+    // Remova e.preventDefault() se quiser manter a navegação.
+    const actions = {
+      cadastrar_estudo_at: () => alert("Abrir formulário de cadastro (AT)."),
+      correcao_correntes: () => alert("Executando correção de correntes..."),
+      correcao_tensao: () => alert("Executando correção de tensão..."),
+      estudos_validos: () => alert("Abrindo lista de estudos válidos..."),
+      esteira_de_notas: () => alert("Abrindo esteira de notas...")
+    };
+
+    document.querySelectorAll('.card[data-action]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const key = link.getAttribute('data-action');
+        // Exemplo: executar função e depois seguir para a rota (comente a linha abaixo para navegar direto)
+        if (actions[key]) {
+          e.preventDefault();
+          actions[key]();
+          // Depois da ação, se desejar navegar:
+          // window.location.href = link.getAttribute('href');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
