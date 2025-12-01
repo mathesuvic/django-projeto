@@ -12,9 +12,11 @@
     table{width:100%;border-collapse:separate;border-spacing:0}
     th,td{padding:8px 10px;border-bottom:1px solid #e7eee7;font-size:13px}
     th{text-align:left}
-    .num-input{width:120px;text-align:right}
     .row-footer{display:flex;gap:14px;margin-top:14px;align-items:center}
     .btn{background:#E8F6E2;border:1px solid #CBE9C2;color:#0B3D22;padding:8px 12px;border-radius:10px;font-weight:800;cursor:pointer}
+    .err{color:#b21; font-size:12px}
+    /* estiliza os inputs do campo previsto do formset */
+    input[name$="-previsto"]{ width:120px; text-align:right }
   </style>
 </head>
 <body>
@@ -23,20 +25,32 @@
   <section class="board">
     <form method="post">
       {% csrf_token %}
+
+      {# OBRIGATÓRIO PARA FORMSETS #}
+      {{ formset.management_form }}
+
+      {# Mostra erros gerais #}
+      {{ formset.non_form_errors }}
+      {{ transf_form.non_field_errors }}
+
       <table>
-        <thead><tr><th>Mês</th><th>Realizado</th><th>Previsto (editar)</th></tr></thead>
+        <thead>
+          <tr><th>Mês</th><th>Realizado</th><th>Previsto (editar)</th></tr>
+        </thead>
         <tbody>
           {% for form in formset.forms %}
             {% with obj=form.instance %}
             <tr>
+              {# Inclui campos ocultos do form (ex.: id) #}
+              {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
               <td>{{ obj.mes }}</td>
               <td style="text-align:right">{{ obj.realizado|floatformat:3 }}</td>
+
               <td>
-                {% if obj.realizado and obj.realizado != 0 %}
-                  <input type="number" class="num-input" value="{{ obj.previsto|floatformat:3 }}" disabled>
-                {% else %}
-                  {{ form.previsto }}
-                {% endif %}
+                {# Sempre renderiza o campo para garantir envio no POST #}
+                {{ form.previsto }}
+                <div class="err">{{ form.previsto.errors }}</div>
               </td>
             </tr>
             {% endwith %}
@@ -47,15 +61,21 @@
       <h4>Transferências</h4>
       <div>
         {{ transf_form.valor.label_tag }} {{ transf_form.valor }}
+        <div class="err">{{ transf_form.valor.errors }}</div>
       </div>
       <div style="margin-top:6px">
         {{ transf_form.de_para.label_tag }} {{ transf_form.de_para }}
+        <div class="err">{{ transf_form.de_para.errors }}</div>
       </div>
 
       <div class="row-footer">
         <button class="btn" type="submit">Salvar</button>
         <a class="btn" href="{% url 'capex' %}">Voltar</a>
-        <span style="margin-left:auto">MELHOR VISÃO: <b>{{ resumo.melhor_visao|floatformat:3 }}</b> | REV3: <b>{{ resumo.rev3|floatformat:3 }}</b> | Saldo: <b>{{ resumo.saldo|floatformat:3 }}</b></span>
+        <span style="margin-left:auto">
+          MELHOR VISÃO: <b>{{ resumo.melhor_visao|floatformat:3 }}</b> |
+          REV3: <b>{{ resumo.rev3|floatformat:3 }}</b> |
+          Saldo: <b>{{ resumo.saldo|floatformat:3 }}</b>
+        </span>
       </div>
     </form>
   </section>

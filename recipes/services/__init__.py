@@ -1,3 +1,2 @@
-# recipes/services/__init__.py
-# recipes/services/__init__.py
-from .planejamento_mt_correntes import corrigir_correntes_from_excel, CorrentesError
+from .planejamento_mt_correntes import excel_para_html
+__all__ = ["excel_para_html"]
